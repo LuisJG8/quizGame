@@ -16,17 +16,3 @@ while quiz.still_has_questions():
 
 print("You completed the quiz!")
 print(f"Your final score is: {quiz.count}/{quiz.question_number}")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
