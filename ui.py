@@ -33,19 +33,30 @@ class QuizInter:
 
         self.window.mainloop()
 
-    def its_true(self, ):
-        self.quiz.check_answer()
-        self.quiz.check_answer(user_answer=self.user_answer)
-        if self.quiz.check_answer == True:
-            self.number += 1
-            self.quiz.next_question()
+    def get_next_question(self):
+        if self.quiz.still_has_questions():
+            self.canvas.config(bg="white")
+            self.label.config(text=f"Score: {self.quiz.score}")
+            q_text = self.quiz.next_question()
+            self.canvas.itemconfig(self.text_question, text=q_text)
+        else:
+            self.canvas.itemconfig(self.text_question, text="You have finish the quiz")
+            self.button1.config(state="disabled")
+            self.button2.config(state="disabled")
+
+    def its_true(self):
+        self.give_feedback(self.quiz.check_answer("True"))
 
     def its_false(self):
-        self.quiz.check_answer()
-        self.quiz.check_answer(user_answer=self.user_answer)
-        if self.quiz.check_answer == False:
-            self.quiz.next_question()
+        is_right = self.quiz.check_answer("False")
+        self.give_feedback(is_right)
+        # self.quiz.check_answer(user_answer=self.user_answer)
+        # if self.quiz.check_answer == False:
+        #     self.quiz.next_question()
 
-    def get_next_question(self):
-        q_text = self.quiz.next_question()
-        self.canvas.itemconfig(self.text_question, text=q_text)
+    def give_feedback(self, is_right):
+        if is_right:
+            self.canvas.config(bg="green")
+        else:
+            self.canvas.config(bg="red")
+        self.window.after(1000, self.get_next_question)
